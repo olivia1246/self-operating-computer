@@ -66,9 +66,7 @@ class Config:
     # You can remove this function entirely 
     #  or comment it out if you want to keep it for future reference.
     # print("[Config][initialize_google] Functionality replaced by new API")
-    pass
-
-        return model
+        pass
 
     def initialize_anthropic(self):
         if self.anthropic_api_key:
