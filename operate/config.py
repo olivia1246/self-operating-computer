@@ -61,18 +61,12 @@ class Config:
         return client
 
     def initialize_google(self):
-        if self.google_api_key:
-            if self.verbose:
-                print("[Config][initialize_google] using cached google_api_key")
-            api_key = self.google_api_key
-        else:
-            if self.verbose:
-                print(
-                    "[Config][initialize_google] no cached google_api_key, try to get from env."
-                )
-            api_key = os.getenv("GOOGLE_API_KEY")
-        genai.configure(api_key=api_key, transport="rest")
-        model = genai.GenerativeModel("gemini-2.0-flash-exp")
+    # This function is no longer needed with the new API
+
+    # You can remove this function entirely 
+    #  or comment it out if you want to keep it for future reference.
+    # print("[Config][initialize_google] Functionality replaced by new API")
+    pass
 
         return model
 
