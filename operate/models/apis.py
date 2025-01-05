@@ -9,6 +9,8 @@ import ollama
 
 from PIL import Image
 from ultralytics import YOLO
+from google import genai
+from google.genai import types
 
 from operate.config import Config
 from operate.exceptions import ModelNotRecognizedException
