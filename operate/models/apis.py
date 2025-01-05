@@ -149,8 +149,9 @@ def call_gemini_pro_vision(messages, objective):
         print(
             "[Self Operating Computer][call_gemini_pro_vision]",
         )
-    # sleep for a second
+    # sleep for a second (assuming this sleep is still needed)
     time.sleep(1)
+
     try:
         screenshots_dir = "screenshots"
         if not os.path.exists(screenshots_dir):
@@ -159,22 +160,38 @@ def call_gemini_pro_vision(messages, objective):
         screenshot_filename = os.path.join(screenshots_dir, "screenshot.png")
         # Call the function to capture the screen with the cursor
         capture_screen_with_cursor(screenshot_filename)
-        # sleep for a second
+        # sleep for a second (assuming this sleep is still needed)
         time.sleep(1)
+
         prompt = get_system_prompt("gemini-pro-vision", objective)
 
-        model = config.initialize_google()
-        if config.verbose:
-            print("[call_gemini_pro_vision] model", model)
+        # Get the API key from environment variable (assuming it's set)
+        api_key = os.environ.get("GOOGLE_API_KEY")
+        if not api_key:
+            raise ValueError("GOOGLE_API_KEY environment variable not set.")
 
-        response = model.generate_content([prompt, Image.open(screenshot_filename)])
+        # Create the client with the API key
+        client = genai.Client(api_key=api_key)
 
-        content = response.text[1:]
+        # Define the model
+        model_name = "gemini-2.0-flash-exp"
+
+        # Combine prompt and image for content generation
+        content = [prompt, Image.open(screenshot_filename)]
+
+        # Generate content using the model and content
+        response = client.models.generate_content(model=model_name, contents=content)
+
+        # Extract the generated text (assuming response.text is the format)
+        generated_text = response.text[1:]
+
         if config.verbose:
             print("[call_gemini_pro_vision] response", response)
-            print("[call_gemini_pro_vision] content", content)
+            print("[call_gemini_pro_vision] content", generated_text)
 
-        content = json.loads(content)
+        # Assuming content is still expected as JSON, parse the generated text
+        content = json.loads(generated_text)
+
         if config.verbose:
             print(
                 "[get_next_action][call_gemini_pro_vision] content",
